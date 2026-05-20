@@ -1,49 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Rifa Chá de Revelação</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <header>
-    <h1>🎀 Rifa Chá de Revelação 🎀</h1>
-    <p>Escolha seu número da sorte!</p>
+    <h1>🎀 Rifa Chá de Revelação</h1>
+
+    <p>
+      Registro em Tempo Real
+    </p>
   </header>
 
   <section class="info">
-    <div class="card">
-      <h2>Números Disponíveis</h2>
-      <span id="available">300</span>
-    </div>
 
     <div class="card">
-      <h2>Reservados</h2>
-      <span id="reserved">0</span>
+      <h2>
+        Números Vendidos
+      </h2>
+
+      <span>
+        <span id="reserved">0</span> / 300
+      </span>
     </div>
+
   </section>
 
   <main>
-    <div class="numbers" id="numbers"></div>
+    <div
+      class="numbers"
+      id="numbers"
+    ></div>
   </main>
 
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <span class="close" id="close">&times;</span>
-
-      <h2>Reservar Número</h2>
-
-      <p id="selectedNumber"></p>
-
-      <input type="text" id="name" placeholder="Seu nome">
-      <input type="text" id="phone" placeholder="Telefone">
-
-      <button id="reserveBtn">Reservar</button>
-    </div>
-  </div>
+  <!-- MODAL -->
+  <div
+    class="modal"
+    id="modal"
+  ></div>
 
   <script src="script.js"></script>
+
 </body>
 </html>
