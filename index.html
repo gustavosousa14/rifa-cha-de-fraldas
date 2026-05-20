@@ -135,6 +135,7 @@
             background-color: #b388ff;
             color: white;
             border-color: #9c27b0;
+            cursor: not-allowed;
         }
 
         .footer-action {
@@ -220,13 +221,6 @@
         .btn-cancel { background: #eee; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .btn-confirm { background: #ff85a2; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .spacer { height: 60px; display: none; }
-        
-        .admin-tip {
-            text-align: center;
-            font-size: 11px;
-            color: #999;
-            margin-top: 15px;
-        }
     </style>
 </head>
 <body>
@@ -244,8 +238,6 @@
         </div>
 
         <div class="rifa-grid" id="grid-rifa"></div>
-        
-        <p class="admin-tip">⚙️ Como Admin: Para <strong>excluir uma reserva</strong>, basta clicar em cima de qualquer número Roxo.</p>
 
         <div class="spacer" id="bottom-spacer"></div>
     </div>
@@ -282,10 +274,16 @@
 
     <script>
         const totalNumbers = 300; 
-        const whatsappNumber = "5511999999999"; // Insira seu WhatsApp aqui completo
         
-        // Carrega os números reservados salvos no navegador, ou começa vazio []
-        let paidNumbers = JSON.parse(localStorage.getItem('rifa_reservados')) || []; 
+        // 1. COLOQUE O SEU NÚMERO DE WHATSAPP AQUI (Com 55 e DDD):
+        const whatsappNumber = "5511999999999"; 
+        
+        // 2. ADICIONAR E EXCLUIR RESERVAS:
+        // Coloque aqui dentro os números reservados separados por vírgula. 
+        // Exemplo para reservar: const paidNumbers = [12, 45, 130];
+        // Para EXCLUIR uma reserva, basta apagar o número daqui de dentro!
+        const paidNumbers = []; 
+
         let selectedNumbers = [];
 
         const grid = document.getElementById('grid-rifa');
@@ -302,8 +300,6 @@
 
                 if (paidNumbers.includes(i)) {
                     box.classList.add('paid');
-                    // OPÇÃO DE EXCLUIR RESERVA AO CLICAR
-                    box.addEventListener('click', () => excluirReserva(i));
                 } else {
                     if (selectedNumbers.includes(i)) {
                         box.classList.add('selected');
@@ -323,16 +319,6 @@
                 element.classList.add('selected');
             }
             updateFooter();
-        }
-
-        function excluirReserva(num) {
-            const numFormatado = String(num).padStart(3, '0');
-            const confirmar = confirm(`Deseja EXCLUIR a reserva do número ${numFormatado} e deixá-lo LIVRE novamente?`);
-            if (confirmar) {
-                paidNumbers = paidNumbers.filter(n => n !== num);
-                localStorage.setItem('rifa_reservados', JSON.stringify(paidNumbers));
-                renderGrid();
-            }
         }
 
         function updateFooter() {
@@ -364,14 +350,6 @@
                 return;
             }
 
-            // Transforma os números selecionados em reservados
-            selectedNumbers.forEach(n => {
-                if (!paidNumbers.includes(n)) paidNumbers.push(n);
-            });
-            
-            // Salva na memória do sistema
-            localStorage.setItem('rifa_reservados', JSON.stringify(paidNumbers));
-
             const numbersStr = selectedNumbers.sort((a,b)=>a-b).map(n => String(n).padStart(3, '0')).join(', ');
             const message = `Olá! Reservei os seguintes números para a Rifa:\n\n*Nome:* ${name}\n*Números:* ${numbersStr}`;
             
@@ -384,7 +362,6 @@
             updateFooter();
         }
 
-        // Inicializa a tabela ao carregar a página
         renderGrid();
     </script>
 </body>
