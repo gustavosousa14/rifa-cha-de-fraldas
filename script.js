@@ -1,7 +1,9 @@
 const numbersDiv = document.getElementById("numbers");
 const modal = document.getElementById("modal");
 const closeBtn = document.getElementById("close");
-const reserveBtn = document.getElementById("reserveBtn");
+
+const reserveBtn =
+  document.getElementById("reserveBtn");
 
 const selectedNumberText =
   document.getElementById("selectedNumber");
@@ -59,29 +61,27 @@ function createNumbers() {
 
     btn.className = "number";
 
-    // SE ESTIVER RESERVADO
+    // NÚMERO RESERVADO
     if (reservedNumbers[number]) {
 
       btn.classList.add("reserved");
 
       btn.innerHTML = `
-        <div style="font-size:18px;font-weight:bold;">
-          ${number}
-        </div>
-
         <div style="
-          font-size:11px;
-          margin-top:4px;
-          word-break:break-word;
+          font-size:18px;
+          font-weight:bold;
         ">
-          ${reservedNumbers[number].name}
+          ${number}
         </div>
       `;
 
     } else {
 
       btn.innerHTML = `
-        <div style="font-size:18px;font-weight:bold;">
+        <div style="
+          font-size:18px;
+          font-weight:bold;
+        ">
           ${number}
         </div>
       `;
@@ -92,26 +92,81 @@ function createNumbers() {
       // SE ESTIVER RESERVADO
       if (reservedNumbers[number]) {
 
-        const password =
-          prompt(
-            `Número ${number} reservado por ${reservedNumbers[number].name}\n\nDigite "remover" para apagar a reserva:`
-          );
+        const data =
+          reservedNumbers[number];
 
-        if (
-          password &&
-          password.toLowerCase() === "remover"
-        ) {
+        modal.innerHTML = `
+          <div class="modal-content">
 
-          delete reservedNumbers[number];
+            <h2>
+              Número ${number}
+            </h2>
 
-          saveData();
+            <p style="
+              margin-top:20px;
+              font-size:18px;
+            ">
+              👤 <strong>Nome:</strong>
+              ${data.name}
+            </p>
 
-          createNumbers();
+            <p style="
+              margin-top:10px;
+              font-size:18px;
+            ">
+              📱 <strong>Tel:</strong>
+              ${data.phone}
+            </p>
 
-          updateCounters();
+            <button
+              id="deleteBtn"
+              style="
+                margin-top:25px;
+                background:#ff3d57;
+              "
+            >
+              Apagar Registro
+            </button>
 
-          alert("Reserva removida.");
-        }
+            <button
+              id="closeInfo"
+              style="
+                margin-top:10px;
+                background:#ddd;
+                color:#333;
+              "
+            >
+              Fechar
+            </button>
+
+          </div>
+        `;
+
+        modal.style.display = "flex";
+
+        // BOTÃO APAGAR
+        document
+          .getElementById("deleteBtn")
+          .onclick = () => {
+
+            delete reservedNumbers[number];
+
+            saveData();
+
+            createNumbers();
+
+            updateCounters();
+
+            modal.style.display = "none";
+          };
+
+        // BOTÃO FECHAR
+        document
+          .getElementById("closeInfo")
+          .onclick = () => {
+
+            modal.style.display = "none";
+          };
 
         return;
       }
@@ -119,56 +174,98 @@ function createNumbers() {
       // NOVA RESERVA
       selectedNumber = number;
 
-      selectedNumberText.innerHTML =
-        `Número escolhido: <strong>${number}</strong>`;
+      modal.innerHTML = `
+        <div class="modal-content">
+
+          <span
+            class="close"
+            id="closeModal"
+          >
+            &times;
+          </span>
+
+          <h2>
+            Reservar Número
+          </h2>
+
+          <p id="selectedNumber">
+            Número escolhido:
+            <strong>${number}</strong>
+          </p>
+
+          <input
+            type="text"
+            id="newName"
+            placeholder="Seu nome"
+          >
+
+          <input
+            type="text"
+            id="newPhone"
+            placeholder="Telefone"
+          >
+
+          <button id="saveReserve">
+            Reservar
+          </button>
+
+        </div>
+      `;
 
       modal.style.display = "flex";
+
+      // FECHAR
+      document
+        .getElementById("closeModal")
+        .onclick = () => {
+
+          modal.style.display = "none";
+        };
+
+      // RESERVAR
+      document
+        .getElementById("saveReserve")
+        .onclick = () => {
+
+          const name =
+            document
+            .getElementById("newName")
+            .value
+            .trim();
+
+          const phone =
+            document
+            .getElementById("newPhone")
+            .value
+            .trim();
+
+          if (!name || !phone) {
+
+            alert(
+              "Preencha todos os campos."
+            );
+
+            return;
+          }
+
+          reservedNumbers[number] = {
+            name,
+            phone
+          };
+
+          saveData();
+
+          createNumbers();
+
+          updateCounters();
+
+          modal.style.display = "none";
+        };
     };
 
     numbersDiv.appendChild(btn);
   }
 }
-
-reserveBtn.onclick = () => {
-
-  const name =
-    nameInput.value.trim();
-
-  const phone =
-    phoneInput.value.trim();
-
-  if (!name || !phone) {
-
-    alert("Preencha todos os campos.");
-
-    return;
-  }
-
-  reservedNumbers[selectedNumber] = {
-    name,
-    phone
-  };
-
-  saveData();
-
-  createNumbers();
-
-  updateCounters();
-
-  modal.style.display = "none";
-
-  nameInput.value = "";
-  phoneInput.value = "";
-
-  alert(
-    `Número ${selectedNumber} reservado com sucesso!`
-  );
-};
-
-closeBtn.onclick = () => {
-
-  modal.style.display = "none";
-};
 
 window.onclick = (e) => {
 
