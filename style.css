@@ -74,14 +74,14 @@ main{
 
   display:grid;
 
-  /* 5 NÚMEROS POR LINHA */
+  /* 5 POR LINHA */
   grid-template-columns:
     repeat(5,1fr);
 
   gap:12px;
 }
 
-/* BOTÕES DOS NÚMEROS */
+/* BOTÕES */
 
 .number{
   background:white;
@@ -231,7 +231,7 @@ main{
   opacity:.9;
 }
 
-/* BOTÕES */
+/* BOTÕES ESPECÍFICOS */
 
 #saveReserve{
   background:#ff4f87;
