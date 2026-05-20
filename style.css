@@ -69,12 +69,12 @@ main{
 }
 
 .numbers{
-
   width:100%;
   max-width:1000px;
 
   display:grid;
 
+  /* 5 NÚMEROS POR LINHA */
   grid-template-columns:
     repeat(5,1fr);
 
@@ -84,7 +84,6 @@ main{
 /* BOTÕES DOS NÚMEROS */
 
 .number{
-
   background:white;
 
   border:none;
@@ -105,7 +104,6 @@ main{
     0 2px 8px rgba(0,0,0,0.08);
 
   display:flex;
-
   align-items:center;
   justify-content:center;
 
@@ -118,6 +116,8 @@ main{
   transform:scale(1.05);
 }
 
+/* RESERVADO */
+
 .reserved{
   background:#ff4f87 !important;
   color:white;
@@ -126,7 +126,6 @@ main{
 /* MODAL */
 
 .modal{
-
   display:none;
 
   position:fixed;
@@ -148,7 +147,6 @@ main{
 }
 
 .modal-content{
-
   background:white;
 
   width:100%;
@@ -175,14 +173,11 @@ main{
 }
 
 .modal-content h2{
-
   color:#333;
-
   font-size:2rem;
 }
 
 .modal-content p{
-
   margin-top:16px;
 
   color:#444;
@@ -193,7 +188,6 @@ main{
 }
 
 .modal-content input{
-
   width:100%;
 
   padding:15px;
@@ -210,12 +204,10 @@ main{
 }
 
 .modal-content input:focus{
-
   border-color:#ff4f87;
 }
 
 .modal-content button{
-
   width:100%;
 
   border:none;
@@ -236,44 +228,23 @@ main{
 }
 
 .modal-content button:hover{
-
   opacity:.9;
-}
-
-.close{
-
-  position:absolute;
-
-  right:20px;
-  top:15px;
-
-  font-size:30px;
-
-  cursor:pointer;
-
-  color:#555;
 }
 
 /* BOTÕES */
 
 #saveReserve{
-
   background:#ff4f87;
-
   color:white;
 }
 
 #deleteBtn{
-
   background:#ff3d57;
-
   color:white;
 }
 
 #closeInfo{
-
   background:#ececec;
-
   color:#333;
 }
 
@@ -281,34 +252,16 @@ main{
 
 @media(max-width:700px){
 
-  .numbers{
-
-    grid-template-columns:
-      repeat(4,1fr);
-  }
-}
-
-@media(max-width:500px){
-
   header h1{
     font-size:2rem;
   }
 
-  .numbers{
-
-    grid-template-columns:
-      repeat(3,1fr);
-  }
-
   .number{
-
     height:70px;
-
     font-size:16px;
   }
 
   .modal-content{
-
     padding:24px;
   }
 }
