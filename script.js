@@ -41,13 +41,35 @@ function createNumbers() {
 
     btn.addEventListener("click", () => {
 
+      // SE ESTIVER RESERVADO
       if (reservedNumbers[formatted]) {
-        alert(
-          `Número reservado por ${reservedNumbers[formatted].name}`
+
+        const action = confirm(
+          `Número ${formatted} reservado por ${reservedNumbers[formatted].name}.\n\nDeseja remover a reserva?`
         );
+
+        if (action) {
+
+          delete reservedNumbers[formatted];
+
+          localStorage.setItem(
+            "reservedNumbers",
+            JSON.stringify(reservedNumbers)
+          );
+
+          numbersDiv.innerHTML = "";
+
+          createNumbers();
+
+          updateCounters();
+
+          alert("Reserva removida!");
+        }
+
         return;
       }
 
+      // ABRIR MODAL
       selectedNumber = formatted;
 
       selectedNumberText.textContent =
@@ -90,6 +112,8 @@ reserveBtn.addEventListener("click", () => {
 
   nameInput.value = "";
   phoneInput.value = "";
+
+  alert("Número reservado com sucesso!");
 });
 
 closeBtn.addEventListener("click", () => {
