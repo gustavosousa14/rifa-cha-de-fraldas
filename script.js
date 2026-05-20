@@ -17,13 +17,19 @@ let reservedNumbers =
   JSON.parse(localStorage.getItem("reservedNumbers")) || {};
 
 function updateCounters() {
-  const reservedCount = Object.keys(reservedNumbers).length;
+
+  const reservedCount =
+    Object.keys(reservedNumbers).length;
 
   reservedText.textContent = reservedCount;
-  availableText.textContent = 300 - reservedCount;
+
+  availableText.textContent =
+    300 - reservedCount;
 }
 
 function createNumbers() {
+
+  numbersDiv.innerHTML = "";
 
   for (let i = 1; i <= 300; i++) {
 
@@ -31,24 +37,34 @@ function createNumbers() {
 
     btn.classList.add("number");
 
-    const formatted = i.toString().padStart(3, "0");
+    const formatted =
+      i.toString().padStart(3, "0");
 
-    btn.textContent = formatted;
-
+    // TEXTO DO BOTÃO
     if (reservedNumbers[formatted]) {
+
+      btn.innerHTML = `
+        <div>${formatted}</div>
+        <small>${reservedNumbers[formatted].name}</small>
+      `;
+
       btn.classList.add("reserved");
+
+    } else {
+
+      btn.textContent = formatted;
     }
 
     btn.addEventListener("click", () => {
 
-      // SE ESTIVER RESERVADO
+      // SE JÁ ESTIVER RESERVADO
       if (reservedNumbers[formatted]) {
 
-        const action = confirm(
+        const remove = confirm(
           `Número ${formatted} reservado por ${reservedNumbers[formatted].name}.\n\nDeseja remover a reserva?`
         );
 
-        if (action) {
+        if (remove) {
 
           delete reservedNumbers[formatted];
 
@@ -56,8 +72,6 @@ function createNumbers() {
             "reservedNumbers",
             JSON.stringify(reservedNumbers)
           );
-
-          numbersDiv.innerHTML = "";
 
           createNumbers();
 
@@ -84,11 +98,16 @@ function createNumbers() {
 
 reserveBtn.addEventListener("click", () => {
 
-  const name = nameInput.value.trim();
-  const phone = phoneInput.value.trim();
+  const name =
+    nameInput.value.trim();
+
+  const phone =
+    phoneInput.value.trim();
 
   if (!name || !phone) {
+
     alert("Preencha todos os campos.");
+
     return;
   }
 
@@ -104,8 +123,6 @@ reserveBtn.addEventListener("click", () => {
 
   modal.style.display = "none";
 
-  numbersDiv.innerHTML = "";
-
   createNumbers();
 
   updateCounters();
@@ -117,14 +134,18 @@ reserveBtn.addEventListener("click", () => {
 });
 
 closeBtn.addEventListener("click", () => {
+
   modal.style.display = "none";
 });
 
 window.addEventListener("click", (e) => {
+
   if (e.target === modal) {
+
     modal.style.display = "none";
   }
 });
 
 createNumbers();
+
 updateCounters();
