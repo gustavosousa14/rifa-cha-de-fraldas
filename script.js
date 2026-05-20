@@ -3,25 +3,43 @@ const modal = document.getElementById("modal");
 const closeBtn = document.getElementById("close");
 const reserveBtn = document.getElementById("reserveBtn");
 
-const selectedNumberText = document.getElementById("selectedNumber");
+const selectedNumberText =
+  document.getElementById("selectedNumber");
 
-const nameInput = document.getElementById("name");
-const phoneInput = document.getElementById("phone");
+const nameInput =
+  document.getElementById("name");
 
-const availableText = document.getElementById("available");
-const reservedText = document.getElementById("reserved");
+const phoneInput =
+  document.getElementById("phone");
+
+const availableText =
+  document.getElementById("available");
+
+const reservedText =
+  document.getElementById("reserved");
 
 let selectedNumber = null;
 
 let reservedNumbers =
-  JSON.parse(localStorage.getItem("reservedNumbers")) || {};
+  JSON.parse(
+    localStorage.getItem("reservedNumbers")
+  ) || {};
+
+function saveData() {
+
+  localStorage.setItem(
+    "reservedNumbers",
+    JSON.stringify(reservedNumbers)
+  );
+}
 
 function updateCounters() {
 
   const reservedCount =
     Object.keys(reservedNumbers).length;
 
-  reservedText.textContent = reservedCount;
+  reservedText.textContent =
+    reservedCount;
 
   availableText.textContent =
     300 - reservedCount;
@@ -33,70 +51,85 @@ function createNumbers() {
 
   for (let i = 1; i <= 300; i++) {
 
-    const btn = document.createElement("button");
-
-    btn.classList.add("number");
-
-    const formatted =
+    const number =
       i.toString().padStart(3, "0");
 
-    // TEXTO DO BOTÃO
-    if (reservedNumbers[formatted]) {
+    const btn =
+      document.createElement("button");
 
-      btn.innerHTML = `
-        <div>${formatted}</div>
-        <small>${reservedNumbers[formatted].name}</small>
-      `;
+    btn.className = "number";
+
+    // SE ESTIVER RESERVADO
+    if (reservedNumbers[number]) {
 
       btn.classList.add("reserved");
 
+      btn.innerHTML = `
+        <div style="font-size:18px;font-weight:bold;">
+          ${number}
+        </div>
+
+        <div style="
+          font-size:11px;
+          margin-top:4px;
+          word-break:break-word;
+        ">
+          ${reservedNumbers[number].name}
+        </div>
+      `;
+
     } else {
 
-      btn.textContent = formatted;
+      btn.innerHTML = `
+        <div style="font-size:18px;font-weight:bold;">
+          ${number}
+        </div>
+      `;
     }
 
-    btn.addEventListener("click", () => {
+    btn.onclick = () => {
 
-      // SE JÁ ESTIVER RESERVADO
-      if (reservedNumbers[formatted]) {
+      // SE ESTIVER RESERVADO
+      if (reservedNumbers[number]) {
 
-        const remove = confirm(
-          `Número ${formatted} reservado por ${reservedNumbers[formatted].name}.\n\nDeseja remover a reserva?`
-        );
-
-        if (remove) {
-
-          delete reservedNumbers[formatted];
-
-          localStorage.setItem(
-            "reservedNumbers",
-            JSON.stringify(reservedNumbers)
+        const password =
+          prompt(
+            `Número ${number} reservado por ${reservedNumbers[number].name}\n\nDigite "remover" para apagar a reserva:`
           );
+
+        if (
+          password &&
+          password.toLowerCase() === "remover"
+        ) {
+
+          delete reservedNumbers[number];
+
+          saveData();
 
           createNumbers();
 
           updateCounters();
 
-          alert("Reserva removida!");
+          alert("Reserva removida.");
         }
 
         return;
       }
 
-      // ABRIR MODAL
-      selectedNumber = formatted;
+      // NOVA RESERVA
+      selectedNumber = number;
 
-      selectedNumberText.textContent =
-        `Número escolhido: ${formatted}`;
+      selectedNumberText.innerHTML =
+        `Número escolhido: <strong>${number}</strong>`;
 
       modal.style.display = "flex";
-    });
+    };
 
     numbersDiv.appendChild(btn);
   }
 }
 
-reserveBtn.addEventListener("click", () => {
+reserveBtn.onclick = () => {
 
   const name =
     nameInput.value.trim();
@@ -116,35 +149,34 @@ reserveBtn.addEventListener("click", () => {
     phone
   };
 
-  localStorage.setItem(
-    "reservedNumbers",
-    JSON.stringify(reservedNumbers)
-  );
-
-  modal.style.display = "none";
+  saveData();
 
   createNumbers();
 
   updateCounters();
 
+  modal.style.display = "none";
+
   nameInput.value = "";
   phoneInput.value = "";
 
-  alert("Número reservado com sucesso!");
-});
+  alert(
+    `Número ${selectedNumber} reservado com sucesso!`
+  );
+};
 
-closeBtn.addEventListener("click", () => {
+closeBtn.onclick = () => {
 
   modal.style.display = "none";
-});
+};
 
-window.addEventListener("click", (e) => {
+window.onclick = (e) => {
 
   if (e.target === modal) {
 
     modal.style.display = "none";
   }
-});
+};
 
 createNumbers();
 
