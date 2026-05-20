@@ -57,7 +57,7 @@ function createNumbers() {
 
     btn.className = "number";
 
-    // RESERVADO
+    // NÚMERO RESERVADO
     if (reservedNumbers[number]) {
 
       btn.classList.add("reserved");
@@ -79,7 +79,7 @@ function createNumbers() {
 
     btn.onclick = () => {
 
-      // NÚMERO RESERVADO
+      // SE O NÚMERO ESTIVER RESERVADO
       if (reservedNumbers[number]) {
 
         const data =
@@ -98,7 +98,7 @@ function createNumbers() {
             </p>
 
             <p>
-              📱 <strong>Telefone:</strong>
+              📱 <strong>Tel:</strong>
               ${data.phone}
             </p>
 
@@ -106,6 +106,12 @@ function createNumbers() {
               id="deleteBtn"
             >
               Apagar Registro
+            </button>
+
+            <button
+              id="closeInfo"
+            >
+              Fechar
             </button>
 
           </div>
@@ -126,14 +132,24 @@ function createNumbers() {
 
             updateCounters();
 
-            // FECHA AUTOMÁTICO
+            closeModal();
+
+            // VOLTA PARA TELA INICIAL
+            window.location.reload();
+          };
+
+        // FECHAR
+        document
+          .getElementById("closeInfo")
+          .onclick = () => {
+
             closeModal();
           };
 
         return;
       }
 
-      // NOVA RESERVA
+      // MODAL DE RESERVA
       modal.innerHTML = `
         <div class="modal-content">
 
@@ -206,8 +222,10 @@ function createNumbers() {
 
           updateCounters();
 
-          // FECHA AUTOMÁTICO
           closeModal();
+
+          // VOLTA PARA TELA INICIAL
+          window.location.reload();
         };
     };
 
@@ -217,7 +235,6 @@ function createNumbers() {
 
 window.onclick = (e) => {
 
-  // FECHA SÓ CLICANDO FORA
   if (e.target === modal) {
 
     closeModal();
