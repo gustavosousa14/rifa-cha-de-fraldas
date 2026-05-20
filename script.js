@@ -1,9 +1,6 @@
 const numbersDiv = document.getElementById("numbers");
 const modal = document.getElementById("modal");
 
-const availableText =
-  document.getElementById("available");
-
 const reservedText =
   document.getElementById("reserved");
 
@@ -30,17 +27,25 @@ function updateCounters() {
     reservedText.textContent =
       reservedCount;
   }
-
-  if (availableText) {
-
-    availableText.textContent =
-      300 - reservedCount;
-  }
 }
 
 function closeModal() {
 
   modal.style.display = "none";
+
+  modal.innerHTML = "";
+}
+
+function goHome() {
+
+  closeModal();
+
+  // FORÇA VOLTAR PRA TELA INICIAL
+  setTimeout(() => {
+
+    window.scrollTo(0, 0);
+
+  }, 100);
 }
 
 function createNumbers() {
@@ -57,29 +62,21 @@ function createNumbers() {
 
     btn.className = "number";
 
-    // NÚMERO RESERVADO
+    // RESERVADO
     if (reservedNumbers[number]) {
 
       btn.classList.add("reserved");
-
-      btn.innerHTML = `
-        <div>
-          ${number}
-        </div>
-      `;
-
-    } else {
-
-      btn.innerHTML = `
-        <div>
-          ${number}
-        </div>
-      `;
     }
+
+    btn.innerHTML = `
+      <div>
+        ${number}
+      </div>
+    `;
 
     btn.onclick = () => {
 
-      // SE O NÚMERO ESTIVER RESERVADO
+      // SE ESTIVER RESERVADO
       if (reservedNumbers[number]) {
 
         const data =
@@ -102,15 +99,11 @@ function createNumbers() {
               ${data.phone}
             </p>
 
-            <button
-              id="deleteBtn"
-            >
+            <button id="deleteBtn">
               Apagar Registro
             </button>
 
-            <button
-              id="closeInfo"
-            >
+            <button id="closeInfo">
               Fechar
             </button>
 
@@ -119,7 +112,7 @@ function createNumbers() {
 
         modal.style.display = "flex";
 
-        // APAGAR REGISTRO
+        // APAGAR
         document
           .getElementById("deleteBtn")
           .onclick = () => {
@@ -132,10 +125,7 @@ function createNumbers() {
 
             updateCounters();
 
-            closeModal();
-
-            // VOLTA PARA TELA INICIAL
-            window.location.reload();
+            goHome();
           };
 
         // FECHAR
@@ -149,7 +139,7 @@ function createNumbers() {
         return;
       }
 
-      // MODAL DE RESERVA
+      // RESERVAR
       modal.innerHTML = `
         <div class="modal-content">
 
@@ -174,9 +164,7 @@ function createNumbers() {
             placeholder="Telefone"
           >
 
-          <button
-            id="saveReserve"
-          >
+          <button id="saveReserve">
             Reservar
           </button>
 
@@ -185,7 +173,7 @@ function createNumbers() {
 
       modal.style.display = "flex";
 
-      // SALVAR RESERVA
+      // SALVAR
       document
         .getElementById("saveReserve")
         .onclick = () => {
@@ -222,10 +210,7 @@ function createNumbers() {
 
           updateCounters();
 
-          closeModal();
-
-          // VOLTA PARA TELA INICIAL
-          window.location.reload();
+          goHome();
         };
     };
 
