@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rifa Virtual - Chá de Fraldas da Princesa</title>
+    <title>Rifa Virtual - Chá de Fraldas</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&display=swap');
 
@@ -129,21 +129,12 @@
             background-color: #ff85a2;
             color: white;
             border-color: #ff5c8a;
-            animation: pop 0.3s ease;
         }
 
         .number-box.paid {
             background-color: #b388ff;
             color: white;
             border-color: #9c27b0;
-            cursor: not-allowed;
-            opacity: 0.85;
-        }
-
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
         }
 
         .footer-action {
@@ -177,13 +168,7 @@
             font-weight: bold;
             font-size: 14px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.2s;
         }
-
-        .btn-submit:hover { background-color: #43a047; }
 
         .modal-overlay {
             position: fixed;
@@ -202,7 +187,6 @@
             border-radius: 15px;
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .modal h2 {
@@ -224,9 +208,7 @@
             border: 2px solid #ffccd5;
             border-radius: 8px;
             outline: none;
-            font-size: 14px;
         }
-        .form-group input:focus { border-color: #ff85a2; }
 
         .modal-buttons {
             display: flex;
@@ -235,25 +217,16 @@
             margin-top: 20px;
         }
 
-        .btn-cancel {
-            background: #eee;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-confirm {
-            background: #ff85a2;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
+        .btn-cancel { background: #eee; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-confirm { background: #ff85a2; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .spacer { height: 60px; display: none; }
+        
+        .admin-tip {
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -261,7 +234,7 @@
     <div class="container">
         <header>
             <h1>👶 Rifa do Chá de Fraldas 🍼</h1>
-            <p class="subtitle">Escolha seus números da sorte abaixo para participar do nosso Chá de Fraldas virtual! Cada número equivale a um pacote de fraldas ou um mimo.</p>
+            <p class="subtitle">Escolha seus números da sorte abaixo para participar do nosso Chá de Fraldas virtual!</p>
         </header>
 
         <div class="subtitle-status">
@@ -271,6 +244,8 @@
         </div>
 
         <div class="rifa-grid" id="grid-rifa"></div>
+        
+        <p class="admin-tip">⚙️ Como Admin: Para <strong>excluir uma reserva</strong>, basta clicar em cima de qualquer número Roxo.</p>
 
         <div class="spacer" id="bottom-spacer"></div>
     </div>
@@ -296,23 +271,21 @@
                 <input type="text" id="user-phone" placeholder="Ex: (11) 99999-9999">
             </div>
             <p style="font-size: 12px; color: #666; margin-top: 10px;">
-                Você será redirecionado para o WhatsApp para confirmar seus números selecionados: <strong id="modal-numbers-list"></strong>.
+                Números selecionados: <strong id="modal-numbers-list"></strong>.
             </p>
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-                <button class="btn-confirm" onclick="sendWhatsApp()">Enviar no WhatsApp</button>
+                <button class="btn-confirm" onclick="sendWhatsApp()">Confirmar e Enviar</button>
             </div>
         </div>
     </div>
 
     <script>
         const totalNumbers = 300; 
-        // Não esqueça de colocar o seu número aqui (com DDD):
-        const whatsappNumber = "5511999999999"; 
+        const whatsappNumber = "5511999999999"; // Insira seu WhatsApp aqui completo
         
-        // Deixei a lista vazia. Assim, nenhum número virá pré-reservado!
-        const paidNumbers = []; 
-        
+        // Carrega os números reservados salvos no navegador, ou começa vazio []
+        let paidNumbers = JSON.parse(localStorage.getItem('rifa_reservados')) || []; 
         let selectedNumbers = [];
 
         const grid = document.getElementById('grid-rifa');
@@ -320,19 +293,25 @@
         const spacer = document.getElementById('bottom-spacer');
         const countSpan = document.getElementById('selected-count');
 
-        for (let i = 1; i <= totalNumbers; i++) {
-            const box = document.createElement('div');
-            box.classList.add('number-box');
-            
-            box.innerText = String(i).padStart(3, '0');
+        function renderGrid() {
+            grid.innerHTML = '';
+            for (let i = 1; i <= totalNumbers; i++) {
+                const box = document.createElement('div');
+                box.classList.add('number-box');
+                box.innerText = String(i).padStart(3, '0');
 
-            if (paidNumbers.includes(i)) {
-                box.classList.add('paid');
-            } else {
-                box.addEventListener('click', () => toggleNumber(i, box));
+                if (paidNumbers.includes(i)) {
+                    box.classList.add('paid');
+                    // OPÇÃO DE EXCLUIR RESERVA AO CLICAR
+                    box.addEventListener('click', () => excluirReserva(i));
+                } else {
+                    if (selectedNumbers.includes(i)) {
+                        box.classList.add('selected');
+                    }
+                    box.addEventListener('click', () => toggleNumber(i, box));
+                }
+                grid.appendChild(box);
             }
-
-            grid.appendChild(box);
         }
 
         function toggleNumber(num, element) {
@@ -344,6 +323,16 @@
                 element.classList.add('selected');
             }
             updateFooter();
+        }
+
+        function excluirReserva(num) {
+            const numFormatado = String(num).padStart(3, '0');
+            const confirmar = confirm(`Deseja EXCLUIR a reserva do número ${numFormatado} e deixá-lo LIVRE novamente?`);
+            if (confirmar) {
+                paidNumbers = paidNumbers.filter(n => n !== num);
+                localStorage.setItem('rifa_reservados', JSON.stringify(paidNumbers));
+                renderGrid();
+            }
         }
 
         function updateFooter() {
@@ -375,14 +364,28 @@
                 return;
             }
 
+            // Transforma os números selecionados em reservados
+            selectedNumbers.forEach(n => {
+                if (!paidNumbers.includes(n)) paidNumbers.push(n);
+            });
+            
+            // Salva na memória do sistema
+            localStorage.setItem('rifa_reservados', JSON.stringify(paidNumbers));
+
             const numbersStr = selectedNumbers.sort((a,b)=>a-b).map(n => String(n).padStart(3, '0')).join(', ');
-            const message = `Olá! Gostaria de reservar os seguintes números para a Rifa do Chá de Fraldas:\n\n*Nome:* ${name}\n*WhatsApp:* ${phone}\n*Números Escolhidos:* ${numbersStr}\n\nPor favor, me envie as instruções de confirmação!`;
+            const message = `Olá! Reservei os seguintes números para a Rifa:\n\n*Nome:* ${name}\n*Números:* ${numbersStr}`;
             
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`, '_blank');
             
+            selectedNumbers = [];
             closeModal();
+            renderGrid();
+            updateFooter();
         }
+
+        // Inicializa a tabela ao carregar a página
+        renderGrid();
     </script>
 </body>
 </html>
