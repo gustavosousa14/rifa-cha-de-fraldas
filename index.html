@@ -52,30 +52,6 @@
             line-height: 1.4;
         }
 
-        .prizes-box {
-            background: #fff0f5;
-            border: 2px dashed #f48fb1;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .prizes-box h3 {
-            color: #c2185b;
-            margin-bottom: 8px;
-            font-size: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .prizes-box p {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
         .subtitle-status {
             display: flex;
             justify-content: space-around;
@@ -288,12 +264,6 @@
             <p class="subtitle">Escolha seus números da sorte abaixo para participar do nosso Chá de Fraldas virtual! Cada número equivale a um pacote de fraldas ou um mimo.</p>
         </header>
 
-        <div class="prizes-box">
-            <h3>🎁 Premiação Especial</h3>
-            <p>1º Lugar: Um super Kit de Cuidados + R$ 150,00 em Compras</p>
-            <p style="margin-top: 5px; font-size: 12px; color: #888;">O sorteio será realizado assim que todos os números forem preenchidos!</p>
-        </div>
-
         <div class="subtitle-status">
             <div class="status-item"><div class="status-color status-available"></div>Livre</div>
             <div class="status-item"><div class="status-color status-selected"></div>Selecionado</div>
@@ -337,9 +307,11 @@
 
     <script>
         const totalNumbers = 300; 
+        // Não esqueça de colocar o seu número aqui (com DDD):
         const whatsappNumber = "5511999999999"; 
         
-        const paidNumbers = [3, 7, 14, 22, 45, 57, 68, 81, 93, 105, 140, 201, 255, 299]; 
+        // Deixei a lista vazia. Assim, nenhum número virá pré-reservado!
+        const paidNumbers = []; 
         
         let selectedNumbers = [];
 
