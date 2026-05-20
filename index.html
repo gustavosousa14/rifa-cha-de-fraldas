@@ -275,13 +275,12 @@
     <script>
         const totalNumbers = 300; 
         
-        // 1. COLOQUE O SEU NÚMERO DE WHATSAPP AQUI (Com 55 e DDD):
+        // Insira seu WhatsApp aqui completo (com 55 e DDD):
         const whatsappNumber = "5511999999999"; 
         
-        // 2. ADICIONAR E EXCLUIR RESERVAS:
-        // Coloque aqui dentro os números reservados separados por vírgula. 
-        // Exemplo para reservar: const paidNumbers = [12, 45, 130];
-        // Para EXCLUIR uma reserva, basta apagar o número daqui de dentro!
+        // LISTA DE NÚMEROS RESERVADOS (Igual ao site do seu link)
+        // Coloque os números aqui para reservar. Ex: const paidNumbers = [10, 25, 30];
+        // Para EXCLUIR um número reservado, basta apagá-lo daqui de dentro.
         const paidNumbers = []; 
 
         let selectedNumbers = [];
@@ -291,23 +290,17 @@
         const spacer = document.getElementById('bottom-spacer');
         const countSpan = document.getElementById('selected-count');
 
-        function renderGrid() {
-            grid.innerHTML = '';
-            for (let i = 1; i <= totalNumbers; i++) {
-                const box = document.createElement('div');
-                box.classList.add('number-box');
-                box.innerText = String(i).padStart(3, '0');
+        for (let i = 1; i <= totalNumbers; i++) {
+            const box = document.createElement('div');
+            box.classList.add('number-box');
+            box.innerText = String(i).padStart(3, '0');
 
-                if (paidNumbers.includes(i)) {
-                    box.classList.add('paid');
-                } else {
-                    if (selectedNumbers.includes(i)) {
-                        box.classList.add('selected');
-                    }
-                    box.addEventListener('click', () => toggleNumber(i, box));
-                }
-                grid.appendChild(box);
+            if (paidNumbers.includes(i)) {
+                box.classList.add('paid');
+            } else {
+                box.addEventListener('click', () => toggleNumber(i, box));
             }
+            grid.appendChild(box);
         }
 
         function toggleNumber(num, element) {
@@ -358,11 +351,8 @@
             
             selectedNumbers = [];
             closeModal();
-            renderGrid();
-            updateFooter();
+            location.reload(); // Recarrega a página exatamente como o modelo faz
         }
-
-        renderGrid();
     </script>
 </body>
 </html>
