@@ -2,7 +2,7 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
 }
 
 body{
@@ -16,12 +16,12 @@ body{
 
 header{
   text-align:center;
-  padding:40px 20px 20px;
+  padding:40px 15px 20px;
 }
 
 header h1{
   color:#ff4f87;
-  font-size:2.5rem;
+  font-size:2.4rem;
   font-weight:bold;
 }
 
@@ -31,7 +31,7 @@ header p{
   font-size:1rem;
 }
 
-/* CARD INFO */
+/* CARD */
 
 .info{
   display:flex;
@@ -41,49 +41,49 @@ header p{
 
 .card{
   background:white;
-  padding:18px 28px;
-  border-radius:20px;
+  padding:20px 35px;
+  border-radius:24px;
   box-shadow:0 4px 10px rgba(0,0,0,0.08);
   text-align:center;
 }
 
 .card h2{
-  font-size:1.1rem;
-  color:#444;
+  font-size:1.2rem;
 }
 
 .card span{
   display:block;
   margin-top:8px;
-  font-size:1.8rem;
+  font-size:2rem;
   font-weight:bold;
   color:#ff4f87;
 }
 
-/* GRID DOS NÚMEROS */
+/* GRID */
 
 main{
   display:flex;
   justify-content:center;
-  padding:10px 20px;
+  padding:10px;
 }
 
 .numbers{
+
   width:100%;
-  max-width:1000px;
 
   display:grid;
 
-  /* 5 POR LINHA */
+  /* SEMPRE 5 COLUNAS */
   grid-template-columns:
     repeat(5,1fr);
 
-  gap:12px;
+  gap:10px;
 }
 
-/* BOTÕES */
+/* NÚMEROS */
 
 .number{
+
   background:white;
 
   border:none;
@@ -91,29 +91,31 @@ main{
   border-radius:16px;
 
   width:100%;
-  height:80px;
+
+  aspect-ratio:1/1;
 
   cursor:pointer;
 
-  font-size:18px;
+  font-size:1.5rem;
+
   font-weight:bold;
 
-  transition:.2s;
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  color:#333;
 
   box-shadow:
     0 2px 8px rgba(0,0,0,0.08);
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  text-align:center;
-
-  color:#333;
+  transition:.2s;
 }
 
 .number:hover{
-  transform:scale(1.05);
+  transform:scale(1.03);
 }
 
 /* RESERVADO */
@@ -147,6 +149,7 @@ main{
 }
 
 .modal-content{
+
   background:white;
 
   width:100%;
@@ -173,21 +176,17 @@ main{
 }
 
 .modal-content h2{
-  color:#333;
   font-size:2rem;
+  color:#333;
 }
 
 .modal-content p{
   margin-top:16px;
-
-  color:#444;
-
   font-size:1.1rem;
-
-  line-height:1.5;
 }
 
 .modal-content input{
+
   width:100%;
 
   padding:15px;
@@ -199,15 +198,10 @@ main{
   margin-top:14px;
 
   font-size:16px;
-
-  outline:none;
-}
-
-.modal-content input:focus{
-  border-color:#ff4f87;
 }
 
 .modal-content button{
+
   width:100%;
 
   border:none;
@@ -223,15 +217,9 @@ main{
   font-weight:bold;
 
   cursor:pointer;
-
-  transition:.2s;
 }
 
-.modal-content button:hover{
-  opacity:.9;
-}
-
-/* BOTÕES ESPECÍFICOS */
+/* BOTÕES */
 
 #saveReserve{
   background:#ff4f87;
@@ -248,17 +236,21 @@ main{
   color:#333;
 }
 
-/* RESPONSIVO */
+/* CELULAR */
 
-@media(max-width:700px){
+@media(max-width:600px){
 
   header h1{
     font-size:2rem;
   }
 
+  .numbers{
+    grid-template-columns:
+      repeat(5,1fr);
+  }
+
   .number{
-    height:70px;
-    font-size:16px;
+    font-size:1.2rem;
   }
 
   .modal-content{
